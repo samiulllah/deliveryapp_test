@@ -68,9 +68,9 @@ class _OrderScreenState extends State<OrderScreen> {
                 const SizedBox(height: 20,),
                 Text("Mileage : $distance"),
                 const SizedBox(height: 10,),
-                Text("Price(Including VAT) : $vatPrice"),
+                Text("Price(Excluding VAT) $noVatPrice"),
                 const SizedBox(height: 10,),
-                Text("Price(Excluding VAT) $vatPrice"),
+                Text("Price(Including VAT) : $vatPrice"),
               ],
             )
           ],
@@ -125,10 +125,11 @@ class _OrderScreenState extends State<OrderScreen> {
     int price=prices[carType];
     double distance=Geolocator.distanceBetween(lat1,long1, lat2, long2);
     distance=(distance/1000)/1.6;
+    double net=distance*price;
     setState(() {
       this.distance="${distance.toStringAsFixed(2)} miles";
-      vatPrice=(distance*price).toStringAsFixed(2);
-      noVatPrice=(distance*price).toStringAsFixed(2);
+      noVatPrice=(net).toStringAsFixed(2);
+      vatPrice=(net+(net*.20)).toStringAsFixed(2);
       calculated=true;
     });
   }
